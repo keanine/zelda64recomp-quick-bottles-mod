@@ -14,6 +14,8 @@
 #include "functions.h"
 #include "z64player.h"
 
+#define CONFIG_EQUIPSLOTS (bool)recomp_get_config_u32("bottle-equipslots")
+
 #define ICON_IMG_SIZE 32
 #define ICON_SIZE 16
 #define ICON_DIST 14
@@ -235,7 +237,7 @@ RECOMP_HOOK("Interface_DrawCButtonIcons") void DrawBottleIcon(PlayState* play) {
                     gDPLoadTextureBlock(OVERLAY_DISP++, bottle_item_textures[GetBottleIconIndex(draw_bottle)], G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                     // Fadeout for fade selection mode:
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, bottle_hud_alpha / ((selection_type != BOTTLE_SELECTION_FADE || draw_bottle == quickBottle.bottleIndex) ? 1 : UNSELECTED_BOTTLE_FADE));
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, bottle_hud_alpha / ((selection_type != BOTTLE_SELECTION_FADE || (draw_bottle == quickBottle.bottleIndex && !CONFIG_EQUIPSLOTS) || (CONFIG_EQUIPSLOTS && BtnStateL.cur && draw_bottle == quickBottle.bottleIndex)) ? 1 : UNSELECTED_BOTTLE_FADE));
                     gEXTextureRectangle(OVERLAY_DISP++, G_EX_ORIGIN_LEFT, G_EX_ORIGIN_LEFT,
                         (hud_layouts[layout_index].screen_positions[i].x - (ICON_SIZE/2)) * 4, (hud_layouts[layout_index].screen_positions[i].y - (ICON_SIZE/2)) * 4,
                         (hud_layouts[layout_index].screen_positions[i].x + (ICON_SIZE/2)) * 4, (hud_layouts[layout_index].screen_positions[i].y + (ICON_SIZE/2)) * 4,

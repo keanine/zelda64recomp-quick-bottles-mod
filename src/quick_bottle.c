@@ -203,6 +203,18 @@ RECOMP_HOOK("Player_ProcessItemButtons") void pre_Player_ProcessItemButtons(Play
         quickBottle.post_release_timer++;
     }
 
+    if (BtnStateL.press) {
+        if (CHECK_BTN_ALL(play->state.input->press.button, BTN_CDOWN)) {
+            quickBottle.bottleIndex = GET_CUR_FORM_BTN_SLOT(EQUIP_SLOT_C_DOWN) - FIRST_BOTTLE_INVENTORY_SLOT;
+        }
+        if (CHECK_BTN_ALL(play->state.input->press.button, BTN_CLEFT)) {
+            quickBottle.bottleIndex = GET_CUR_FORM_BTN_SLOT(EQUIP_SLOT_C_LEFT) - FIRST_BOTTLE_INVENTORY_SLOT;
+        }
+        if (CHECK_BTN_ALL(play->state.input->press.button, BTN_CRIGHT)) {
+            quickBottle.bottleIndex = GET_CUR_FORM_BTN_SLOT(EQUIP_SLOT_C_RIGHT) - FIRST_BOTTLE_INVENTORY_SLOT;
+        }
+    }
+
     // Are we using a bottle? Or just done switching:
     if (BtnStateL.rel) {
         if (quickBottle.quick_press_timer < BOTTLE_QUICK_PRESS_TIME) {          
@@ -250,6 +262,24 @@ RECOMP_HOOK("Player_ProcessItemButtons") void pre_Player_ProcessItemButtons(Play
             QuickBottle_Cycle(hud_layouts[layout_index].cycle_directions.down);
             quickBottle.quick_press_timer = BOTTLE_QUICK_PRESS_TIME; // Guess we're a using the bottle, then.
             validate_direction = hud_layouts[layout_index].cycle_directions.down;
+        }
+
+        if (CHECK_BTN_ALL(play->state.input->cur.button, BTN_CDOWN) && C_SLOT_EQUIP(0, EQUIP_SLOT_C_DOWN) != QuickBottle_GetSelectedInventorySlot()) {
+            BUTTON_ITEM_EQUIP(0, EQUIP_SLOT_C_DOWN) = QuickBottle_GetSelectedBottleId();
+            C_SLOT_EQUIP(0, EQUIP_SLOT_C_DOWN) = QuickBottle_GetSelectedInventorySlot();
+            Interface_LoadItemIcon(play, EQUIP_SLOT_C_DOWN);
+        }
+
+        if (CHECK_BTN_ALL(play->state.input->cur.button, BTN_CLEFT) && C_SLOT_EQUIP(0, EQUIP_SLOT_C_LEFT) != QuickBottle_GetSelectedInventorySlot()) {
+            BUTTON_ITEM_EQUIP(0, EQUIP_SLOT_C_LEFT) = QuickBottle_GetSelectedBottleId();
+            C_SLOT_EQUIP(0, EQUIP_SLOT_C_LEFT) = QuickBottle_GetSelectedInventorySlot();
+            Interface_LoadItemIcon(play, EQUIP_SLOT_C_LEFT);
+        }
+
+        if (CHECK_BTN_ALL(play->state.input->cur.button, BTN_CRIGHT) && C_SLOT_EQUIP(0, EQUIP_SLOT_C_RIGHT) != QuickBottle_GetSelectedInventorySlot()) {
+            BUTTON_ITEM_EQUIP(0, EQUIP_SLOT_C_RIGHT) = QuickBottle_GetSelectedBottleId();
+            C_SLOT_EQUIP(0, EQUIP_SLOT_C_RIGHT) = QuickBottle_GetSelectedInventorySlot();
+            Interface_LoadItemIcon(play, EQUIP_SLOT_C_RIGHT);
         }
 
     } else{

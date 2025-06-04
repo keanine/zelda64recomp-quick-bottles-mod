@@ -146,3 +146,13 @@ step = 1
 precision = 1
 percent = false
 default = 10
+
+[[manifest.config_options]]
+id = "bottle-equipslots"
+name = "Use Equip Slots"
+description = """
+When you equip a bottle to a C button, that button is used as a quick bottles slot.
+"""
+type = "Enum"
+options = [ "Off", "On" ]
+default = "Off"
