@@ -8,7 +8,7 @@
 id = "mm_quickbottles"
 
 # Version of this mod.
-version = "1.0.1"
+version = "1.1.4"
 
 # The name that will show up for this mod in the mod menu. This should be human readable.
 display_name = "Quick Bottles"
@@ -122,13 +122,12 @@ default = "Off"
 id = "bottle-autohide"
 name = "Autohide"
 description = """
-While holding L it will respect your selected Bottle Hud Layout as normal.
+While holding L it will respect your selected Bottle Hud Layout as normal. Otherwise, the selected bottle is shown in the first position and the others are hidden.
 
-While L is released, the selected bottle is shown in the first position and the others are hidden.
-
+When set to 'On' the quick_press duration must expire before showing all bottles. 'Instant' shows all bottles right away (meaning they will appear when you simply want to use a bottle). 
 """
 type = "Enum"
-options = [ "Off", "On" ]
+options = [ "Off", "On", "Instant" ]
 default = "Off"
 
 [[manifest.config_options]]

@@ -12,7 +12,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 
 #define LOAD_SAVE_SELECTION_KEY "LT_Schmiddy.QuickBottles.bottleIndex"
-
+#define SAVE_TYPE_AUTOSAVE 2
 // EXTERNALS:
 #define BOTTLE_CATCH_PARAMS_ANY -1
 typedef struct struct_8085D798 {
@@ -186,6 +186,12 @@ RECOMP_HOOK_RETURN("Sram_InitNewSave") void init_new_quickBottle() {
     quickBottle.bottleIndex = 0;
 }
 
+RECOMP_HOOK("Lib_MemCpy") void save_achiement_flags_autosave() {
+    // Cursed, but waiting for a better implementation.
+    if (gSaveContext.save.isOwlSave != SAVE_TYPE_AUTOSAVE) {return;}
+    KV_Slot_Set_S32(LOAD_SAVE_SELECTION_KEY, quickBottle.bottleIndex);
+}
+
 static u8 L_Timer = 0;
 static bool skip_regular_processing = false;
 static Player* captured_player = NULL;
@@ -333,7 +339,8 @@ RECOMP_PATCH void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 btn) {
         }
 
         if (item == ITEM_HOT_SPRING_WATER) {
-            Interface_StartBottleTimer(60, QuickBottle_GetSelectedInventorySlot());
+            Interface_StartBottleTimer(60, quickBottle.bottleIndex);
+            // Interface_StartBottleTimer(60, QuickBottle_GetSelectedInventorySlot());
         }
         return;
     }
@@ -347,6 +354,10 @@ RECOMP_PATCH void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 btn) {
 
     play->pauseCtx.cursorItem[PAUSE_ITEM] = item;
     gSaveContext.buttonStatus[btn] = BTN_ENABLED;
+    
+    if (item == ITEM_HOT_SPRING_WATER) {
+        Interface_StartBottleTimer(60, GET_CUR_FORM_BTN_SLOT(btn) - SLOT_BOTTLE_1);
+    }
 
 }
 

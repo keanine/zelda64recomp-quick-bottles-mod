@@ -1,7 +1,9 @@
 {
     "name": "Quick_Bottles",
-    "version_number": "1.0.1",
+    "version_number": "1.1.4",
     "website_url": "https://github.com/LT-Schmiddy/zelda64recomp-quick-bottles-mod",
     "description": "This mod binds your bottles to L, moving the minimap toggle to the mod menu. Tap L to use a bottle. Hold L and use the DPad to select one.",
-    "dependencies": []
+    "dependencies": [
+        "ProxyMM-KV-0.0.5"
+    ]
 }

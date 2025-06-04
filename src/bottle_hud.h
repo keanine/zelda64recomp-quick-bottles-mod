@@ -25,6 +25,11 @@ typedef enum {
     BOTTLE_ROUND_ROBIN_REVERSE
 } BottleHudRoundRobin;
 
+typedef enum {
+    BOTTLE_AUTOHIDE_OFF,
+    BOTTLE_AUTOHIDE_ON,
+    BOTTLE_AUTOHIDE_INSTANT
+} BottleHudAutoHide;
 
 typedef struct {
     int up;

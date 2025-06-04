@@ -184,14 +184,18 @@ RECOMP_HOOK("Interface_DrawCButtonIcons") void DrawBottleIcon(PlayState* play) {
         gEXSetScissor(OVERLAY_DISP++, G_SC_NON_INTERLACE, G_EX_ORIGIN_LEFT, G_EX_ORIGIN_RIGHT, 0, 0, 0, SCREEN_HEIGHT);
         
         // Special handling for the single display mode.
-        if (layout_index == BOTTLE_HUD_SINGLE) {
+        if (
+            layout_index == BOTTLE_HUD_SINGLE
+            || (recomp_get_config_u32("bottle-autohide") == BOTTLE_AUTOHIDE_INSTANT && !BtnStateL.cur) 
+            || (recomp_get_config_u32("bottle-autohide") == BOTTLE_AUTOHIDE_ON && quickBottle.quick_press_timer < BOTTLE_QUICK_PRESS_TIME)
+        ) {
             int i = quickBottle.bottleIndex;
             gDPLoadTextureBlock(OVERLAY_DISP++, bottle_item_textures[GetBottleIconIndex(i)], G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, bottle_hud_alpha);
             gEXTextureRectangle(OVERLAY_DISP++, G_EX_ORIGIN_LEFT, G_EX_ORIGIN_LEFT,
-                (hud_layouts[layout_index].screen_positions[i].x - (ICON_SIZE/2)) * 4, (hud_layouts[layout_index].screen_positions[i].y - (ICON_SIZE/2)) * 4,
-                (hud_layouts[layout_index].screen_positions[i].x + (ICON_SIZE/2)) * 4, (hud_layouts[layout_index].screen_positions[i].y + (ICON_SIZE/2)) * 4,
+                (hud_layouts[layout_index].screen_positions[0].x - (ICON_SIZE/2)) * 4, (hud_layouts[layout_index].screen_positions[0].y - (ICON_SIZE/2)) * 4,
+                (hud_layouts[layout_index].screen_positions[0].x + (ICON_SIZE/2)) * 4, (hud_layouts[layout_index].screen_positions[0].y + (ICON_SIZE/2)) * 4,
                 0,
                 0, 0,
                 ICON_DSDX, ICON_DTDY);
@@ -200,8 +204,10 @@ RECOMP_HOOK("Interface_DrawCButtonIcons") void DrawBottleIcon(PlayState* play) {
             // i represents the index of the current grid position.
             // draw_bottle is the bottle index to draw.
             // max_bottle_draws is used to stop early in gapless mode.
+
             int draw_bottle = (rr ? quickBottle.bottleIndex : 0) - 1;
             int max_bottle_draws = hud_layouts[layout_index].gapless ? quickBottle.numberOfBottles : 6;
+
             for (int i = 0; i < max_bottle_draws; i++) {
                 do {
                     draw_bottle++;
@@ -213,12 +219,6 @@ RECOMP_HOOK("Interface_DrawCButtonIcons") void DrawBottleIcon(PlayState* play) {
                 // If we're in gapless mode, skip empty slots until we find another bottle to draw.
                 // Calculating max_bottle_draws ahead of time ensures we never draw duplicates.
                 } while ( (hud_layouts[layout_index].gapless && !QuickBottle_IsValidBottleItem(QuickBottle_GetBottleId(draw_bottle))));
-
-                if (recomp_get_config_u32("bottle-autohide") != 0 && quickBottle.quick_press_timer < BOTTLE_QUICK_PRESS_TIME) {
-                    max_bottle_draws = 1;
-                    i = 0;
-                    draw_bottle = quickBottle.bottleIndex;
-                }
 
                 if (selection_type == BOTTLE_SELECTION_BORDER && ((i == quickBottle.bottleIndex && !rr) || (i == 0 && rr))){
                     // Drawing the item outline for border selection mode:

@@ -53,7 +53,6 @@ def get_package_manifest() ->dict[str, str]:
         "dependencies":  []
     }
 
-
 def create_package_directory():
     print(f"Creating package directory at '{package_dir}'...")
     os.makedirs(package_dir)
@@ -66,11 +65,12 @@ def create_manifest(path: Path):
 
 def update_manifest(path: Path):
     print(f"Updating manifest at '{path}'...")
-    manifest = get_package_manifest();
-    del manifest["name"]
+    updated_manifest = get_package_manifest()
+    del updated_manifest["name"]
+    del updated_manifest["dependencies"]
 
     current_manifest: dict[str, str] = json.loads(path.read_text());
-    current_manifest.update(manifest)
+    current_manifest.update(updated_manifest)
 
     path.write_text(json.dumps(current_manifest, indent=4))
 

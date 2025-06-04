@@ -18,7 +18,7 @@ the DPad to change your selection. How the DPad directions cycle through your bo
 
 This mod IS compatible with the built-in DPad mod, as well as [Arrow Tweaks](https://thunderstore.io/c/zelda-64-recompiled/p/LoadingError404/Arrow_Tweaks/)
 and potentially any other DPad mod that uses the original built-in mod as a base. *Note that maintaining this compatibility necessitated that when Link
-uses a bottle with L, he automatically puts it away afterwards. This is intended behavior and will not be changed.*
+uses a bottle with L, he automatically puts it away afterwards. This is intended behavior and will not be changed. HOWEVER, bottle behavior on the C Buttons works as normal, meaning that you can still use any glitches that depend on it.*
 
 This is a great companion to mods that increase the difficulty, as potions and other healing items are now only a button press away!
 
@@ -38,6 +38,9 @@ The third bottle, the one with the Fairy, is the one selected in all images belo
 ### Single
 
 ![Layout Example](https://github.com/LT-Schmiddy/zelda64recomp-quick-bottles-mod/blob/custom-main/page_assets/single_layout.png?raw=true)
+
+(An 'Auto-Hide' mode allows you to use allows you to use single-display normally, and your chosen layout option when selecting a bottle.
+Special thanks to [Keanine](https://thunderstore.io/c/zelda-64-recompiled/p/Keanine/) for contributing this feature.)
 
 ### Horizontal
 
@@ -96,9 +99,11 @@ If you don't like the transparency used to indicate your selected bottle, a 'Bor
 
 ![Layout Example](https://github.com/LT-Schmiddy/zelda64recomp-quick-bottles-mod/blob/custom-main/page_assets/horizontal_border_selection.png?raw=true)
 
-Please report any issues you come across!
+Please report any issues you come across on GitHub!
+
 
 ## Writing mods
+
 See [this document](https://hackmd.io/fMDiGEJ9TBSjomuZZOgzNg) for an explanation of the modding framework, including how to write function patches and perform interop between different mods.
 
 ## Tools
